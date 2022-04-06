@@ -21,8 +21,13 @@ export class OrdersService {
     return this.orderModel.findAll();
   }
 
-  findOne(id: string) {
-    return this.orderModel.findByPk(id, { rejectOnEmpty: true });
+  async findOne(id: string) {
+    // return this.orderModel.findByPk(id, { rejectOnEmpty: true });
+    const order: Order = await this.orderModel.findByPk(id);
+    if (!order) {
+      throw Error(`Order with '${id}' not found.`);
+    }
+    return order;
   }
 
   async update(id: string, updateOrderDto: UpdateOrderDto) {
